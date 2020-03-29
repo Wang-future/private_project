@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+# -*- coding:utf-8 -*-
 import pyltp
 from pyltp import Segmentor
 # 分词
