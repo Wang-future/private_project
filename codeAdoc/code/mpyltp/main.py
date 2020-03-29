@@ -4,7 +4,7 @@ import pyltp
 from pyltp import Segmentor
 # 分词
 def segmentor(sentence):
-    cws_model_path = 'D:\application\pyltp\ltp_data_v3.4.0'
+    cws_model_path = '../model'
     segmentor = Segmentor()  # 初始化实例
     segmentor.load(cws_model_path)  # 加载模型
     # 使用分词外部词典
