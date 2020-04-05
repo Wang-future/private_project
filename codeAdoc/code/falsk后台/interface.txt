@@ -1,0 +1,45 @@
+# getHistoryConversations
+Input:
+{
+    sedId:Str;
+    openId:Str;
+}
+
+Output:
+{
+    seqId:std;
+    data:[{sender: "user"; text:"你好"},] sender分为user,rot
+    ret_code = 0; # 0代表成功
+}
+
+# getAnswer
+Input:
+{
+    sedId:Str;
+    openId:Str;
+    message:Str;
+}
+
+Output:
+{
+    seqId:str;
+    data:{
+        messages:[{sender: 1; text:str},]
+    }
+    ret_code = 0; # 0代表成功
+}
+
+#voiceSend
+Input:
+{
+    sedId:Str;
+    openId:Str;
+    message:Str;
+}
+
+Output:
+{
+    seqId:str;
+    info:str;
+    ret_code = 0; # 0代表成功 1代表未能识别指令 2 执行不成功
+}

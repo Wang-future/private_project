@@ -1,0 +1,3 @@
+name:lunwen
+(1) conversation
+create table 'conversation' ( userid varchar(20)NOT NULL, )PRIMARY KEY  (`id`

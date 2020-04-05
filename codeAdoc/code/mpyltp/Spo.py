@@ -1,80 +1,77 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 
-# import pyltp
-# from pyltp import Segmentor,Postagger,NamedEntityRecognizer, Parser, SementicRoleLabeller
-# class CPyltp():
-#     def __init__(self, cws_model_path, pos_model_path, ner_model_path, parse_path, sementic_path):
-#         self.cws_model_path = cws_model_path
-#         self.pos_model_path = pos_model_path
-#         self.ner_model_path = ner_model_path
-#         self.parse_path = parse_path
-#         self.sementic_path = sementic_path
-#     # 分词
-#     def segmentor(self, sentence):
-#         segmentor = Segmentor()  # 初始化实例
-#         segmentor.load(self.cws_model_path)  # 加载模型
-#         words = segmentor.segment(sentence)  # 分词
-#         print ' '.join(words)
-#         print('log, print words:')
-#         print(words)
-#         segmentor.release()  # 释放模型
-#         return words
-#
-#     def postagger(self, words):
-#         postagger = Postagger() # 初始化实例
-#         postagger.load(self.pos_model_path)  # 加载模型
-#         postags = postagger.postag(words)  # 词性标注
-#         print ' '.join(postags)
-#         print(postags)
-#         postagger.release()  # 释放模型
-#         return postags
-#
-#     def ner(self, sentence):
-#         recognizer = NamedEntityRecognizer() # 初始化实例
-#         recognizer.load(self.ner_model_path)  # 加载模型
-#
-#         words = self.segmentor(sentence)
-#         postags = self.postagger(words)
-#         nertags = recognizer.recognize(words, postags)  # 命名实体识别
-#         print (' '.join(nertags))
-#         print(nertags)
-#         recognizer.release()  # 释放模型
-#
-#     def parse(self, sentence):
-#         words = self.segmentor(sentence)
-#         postags = self.postagger(words)
-#         """
-#         依存句法分析
-#         :param words:
-#         :param postags:
-#         :return:
-#         """
-#         parser = Parser()  # 初始化实例
-#         parser.load(self.parse_path)  # 加载模型
-#         arcs = parser.parse(words, postags)  # 句法分析
-#         print("\t".join("%d:%s" % (arc.head, arc.relation) for arc in arcs))
-#         for arc in arcs:
-#             print(arc)
-#             print('\n')
-#         parser.release()  # 释放模型
-#
-#     def sematic(self, sentence):
-#         labeller = SementicRoleLabeller() # 初始化实例
-#         labeller.load(self.sementic_path)  # 加载模型
-#
-#         words = elf.segmentor(sentence)
-#         postags = self.postagger(words)
-#         # arcs 使用依存句法分析的结果
-#         roles = labeller.label(words, postags, arcs)  # 语义角色标注
-#         # 打印结果
-#         for role in roles:
-#             print(role.index, "".join(["%s:(%d,%d)" % (arg.name, arg.range.start, arg.range.end) for arg in role.arguments]))
-#         labeller.release()  # 释放模
-
 import os
 from pyltp import Segmentor, Postagger, Parser, NamedEntityRecognizer, SementicRoleLabeller
 from Neo4j import MKB
+class CPyltp():
+    def __init__(self, cws_model_path, pos_model_path, ner_model_path, parse_path, sementic_path):
+        self.cws_model_path = cws_model_path
+        self.pos_model_path = pos_model_path
+        self.ner_model_path = ner_model_path
+        self.parse_path = parse_path
+        self.sementic_path = sementic_path
+    # 分词
+    def segmentor(self, sentence):
+        segmentor = Segmentor()  # 初始化实例
+        segmentor.load(self.cws_model_path)  # 加载模型
+        words = segmentor.segment(sentence)  # 分词
+        print(' '.join(words))
+        print('log, print words:')
+        print(words)
+        segmentor.release()  # 释放模型
+        return words
+
+    def postagger(self, words):
+        postagger = Postagger() # 初始化实例
+        postagger.load(self.pos_model_path)  # 加载模型
+        postags = postagger.postag(words)  # 词性标注
+        print(' '.join(postags))
+        print(postags)
+        postagger.release()  # 释放模型
+        return postags
+
+    def ner(self, sentence):
+        recognizer = NamedEntityRecognizer() # 初始化实例
+        recognizer.load(self.ner_model_path)  # 加载模型
+
+        words = self.segmentor(sentence)
+        postags = self.postagger(words)
+        nertags = recognizer.recognize(words, postags)  # 命名实体识别
+        print (' '.join(nertags))
+        print(nertags)
+        recognizer.release()  # 释放模型
+
+    def parse(self, sentence):
+        words = self.segmentor(sentence)
+        postags = self.postagger(words)
+        """
+        依存句法分析
+        :param words:
+        :param postags:
+        :return:
+        """
+        parser = Parser()  # 初始化实例
+        parser.load(self.parse_path)  # 加载模型
+        arcs = parser.parse(words, postags)  # 句法分析
+        print("\t".join("%d:%s" % (arc.head, arc.relation) for arc in arcs))
+        for arc in arcs:
+            print(arc)
+            print('\n')
+        parser.release()  # 释放模型
+
+    def sematic(self, sentence):
+        labeller = SementicRoleLabeller() # 初始化实例
+        labeller.load(self.sementic_path)  # 加载模型
+
+        words = elf.segmentor(sentence)
+        postags = self.postagger(words)
+        # arcs 使用依存句法分析的结果
+        roles = labeller.label(words, postags, arcs)  # 语义角色标注
+        # 打印结果
+        for role in roles:
+            print(role.index, "".join(["%s:(%d,%d)" % (arg.name, arg.range.start, arg.range.end) for arg in role.arguments]))
+        labeller.release()  # 释放模
 
 class LtpParser:
     def __init__(self):
@@ -95,6 +92,16 @@ class LtpParser:
         # 语义角色标注
         self.labeller = SementicRoleLabeller()
         self.labeller.load(os.path.join(LTP_PATH, 'pisrl.model'))
+
+    # 分词
+    def segmentor(self, sentence):
+        words = self.segmentor.segment(sentence)  # 分词
+        return words
+
+    def postagger(self, sentence):
+        words = self.segmentor(sentence)
+        postags = self.postagger.postag(words)  # 词性标注
+        return postags
 
     def format_labeller(self, words, postags):
         '''语义角色标注'''
@@ -268,18 +275,20 @@ class TripleExtractor:
 if __name__ =="__main__":
     # mPyltp = CPyltp('./model/cws.model', './model/pos.model', './model/ner.model', './model/parser.model', './model/pisrl.model')
     # mPyltp.parse("好漂亮的彩虹呀")
-    mtest = TripleExtractor()
-    mlist = mtest.triple_main("我想吃绿色苹果。")
+    # mtest = TripleExtractor()
+    # mlist = mtest.triple_main("我想吃绿色苹果。")
     # print("show results:" + str(len(mlist)))
     # for item in mlist:
     #     print('s:' + item[0] + ', v:'+item[1] + ', o:' + item[2] + '\n')
     #print(mtest.triple_main("传统的基于容器的开发要从镜像加载开始。"))
     ip = '127.0.0.1'
-    port = '7474'
-    username = 'neo4j'
-    password = 'wang654321.'
-    mKB = MKB(ip, port, username, password)
+    # port = '7474'
+    # username = 'neo4j'
+    # password = 'wang654321.'
+    # mKB = MKB(ip, port, username, password)
+    #
+    # for item in mlist:
+    #     mKB.addSPO(item[0], item[1], item[2])
 
-    for item in mlist:
-        mKB.addSPO(item[0], item[1], item[2])
+    # mPyltp.ner('我想关闭Alo服务')
     

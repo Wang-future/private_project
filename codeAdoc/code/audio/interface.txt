@@ -1,0 +1,11 @@
+voice
+Input:
+{
+    sedId:Str;
+    message:Str;
+}
+Output:
+{
+    ret_info:str;
+    ret_code = 0; # 0代表成功 1代表未能识别指令 2 执行不成功
+}

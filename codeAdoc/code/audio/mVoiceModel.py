@@ -12,9 +12,15 @@ class voiceModel():
     def sentence_vector(self, s):
         words = jieba.lcut(s)
         v = np.zeros(100)
+        wordLen = len(words)
         for word in words:
-            v += self.model.wv[word]
-        v /= len(words)
+            try:
+                temInt = self.model.wv[word]
+            except Exception as e:
+                wordLen -=1
+            else:
+                v += temInt
+        v /= wordLen
         return v
 
     def vector_similarity(self, s1, s2):
