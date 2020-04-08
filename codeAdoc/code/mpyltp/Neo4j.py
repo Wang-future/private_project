@@ -2,7 +2,9 @@
 # -*- coding:utf-8 -*-
 
 from py2neo import Graph,Node,Relationship,cypher
- 
+import sys
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 class MKB():
     def __init__(self, _ip, _port, _username, _password):
@@ -26,6 +28,7 @@ class MKB():
 
     
     def addSPO(self, s, p, o):
+        print('in addSPO!')
         sdict = {}
         odict = {}
         sdict['value'] = s
@@ -36,6 +39,19 @@ class MKB():
         print(match_str)
         return self.mGraph.run(match_str).data()
 
+    def searchBaseSP(self, s, p):
+        match_str = 'MATCH (a:' + self.label + ')-[r:' + p +']->(O)' ' WHERE a.value = \'' + s +'\'' + ' RETURN O.value'
+        print(match_str)
+        oList = self.mGraph.run(match_str).data()
+        ansStr = []
+        for item in oList:
+            print(type(item))
+            print(item.keys())
+            for i,result in item.items():
+                ansStr.append(str(result))
+                # print('searchBaseSP return o:'+  ' ' + str(item).encode('utf-8').decode('utf-8'))
+        return ansStr
+
     def prGraph(self):
         print(self.mGraph)
 
@@ -45,6 +61,7 @@ if __name__ == '__main__':
     username = 'neo4j'
     password = 'wang654321.'
     mKB = MKB(ip, port, username, password)
+    mKB.searchBaseSP('我', '想')
     # name = 'wang'
     # label = 'Person'
     # mKB.addNode(label,name)
@@ -60,5 +77,5 @@ if __name__ == '__main__':
     # mdic['new'] = 'hello'
     # label = 'Person'
     # mKB.addNode(label, mdic)
-    mKB.addSPO('我', '想', '红苹果')
+    # mKB.addSPO('我', '想', '红苹果')
     # print(data)

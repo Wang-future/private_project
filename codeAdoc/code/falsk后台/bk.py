@@ -5,6 +5,12 @@ import time
 import redis
 import requests
 import json
+import sys
+defaultencoding = 'utf-8'
+if sys.getdefaultencoding() != defaultencoding:
+    reload(sys)
+    sys.setdefaultencoding(defaultencoding)
+    
 app = Flask(__name__)
 
 g_redis_ip = '47.115.55.90'
@@ -16,9 +22,23 @@ g_redic_pipe = g_redic_client.pipeline()
 def todayDate():
     return time.strftime("%Y-%m-%d",time.localtime(time.time()))
 
-def search(strAsk):
-    strAnswer = 'nihao'
-    return strAnswer
+def search(seqId, strAsk):
+    url = 'http://127.0.0.1:5017/extractSPO'
+    data = {"seqId": seqId, "ask": strAsk}
+    res = requests.post(url=url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+    # 提取返回的元组
+    print(res.text)
+    ansList = json.loads(res.text).get('ansList')
+    ret_code = json.loads(res.text).get('ret_code')
+    if ret_code == 1:
+        return "您的问题暂时无法找到答案"
+    ansStr = '你的问题候选答案如下：\n'
+    print(ansList)
+    for index in range(len(ansList)):
+        temStr = '('+str(index+1)+')' + ansList[index]
+        ansStr += temStr
+    print ('ansStr:'+ansStr)
+    return ansStr
 
 def conKey(OpenId):
     return 'con_'+str(OpenId)
@@ -98,7 +118,7 @@ def recAsk():
 
     retDataDict = {}
     ret_messages = []
-    strAnswer = search(message)
+    strAnswer = search(seqId, message)
     retJson = {}
     retJson['sender'] = 'rot'
     retJson['text'] = strAnswer
