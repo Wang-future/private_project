@@ -23,7 +23,7 @@ def todayDate():
     return time.strftime("%Y-%m-%d",time.localtime(time.time()))
 
 def search(seqId, strAsk):
-    url = 'http://127.0.0.1:5017/extractSPO'
+    url = 'http://172.17.0.2:5015/extractSPO'
     data = {"seqId": seqId, "ask": strAsk}
     res = requests.post(url=url, data=json.dumps(data), headers={'Content-Type': 'application/json'})
     # 提取返回的元组
@@ -71,7 +71,7 @@ def getKeyData(OpenId):
     return conConversation(mlist)
 
 def carryVoiceInstr(seqId, message):
-    url = 'http://127.0.0.1:5016/voiceSend'
+    url = 'http://172.17.0.3:5016/voiceSend'
     data = {"seqId": seqId, "message": message}
     res = requests.post(url=url, data=json.dumps(data),headers={'Content-Type': 'application/json'})
     ret_code = 1
@@ -175,7 +175,7 @@ def voiceSend():
     return retDict
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5015,ssl_context=('./zhengshu/3708790_www.iais.group.pem', './zhengshu/3708790_www.iais.group.key'))
+    app.run(host='0.0.0.0', port=5017,ssl_context=('./zhengshu/3708790_www.iais.group.pem', './zhengshu/3708790_www.iais.group.key'))
     # redisKey ='test'
     # ret = getKeyData(redisKey)
     # print(ret)
